@@ -1,17 +1,49 @@
+
+import java.util.ArrayList;
+import java.util.Scanner;
+
 // Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
+
 // then press Enter. You can now see whitespace characters in your code.
 public class Main {
+
+
     public static void main(String[] args) {
-        // Press Alt+Intro with your caret at the highlighted text to see how
-        // IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+        Scanner scanner = new Scanner(System.in);
+        int n, contadorCaras = 0, contadorCruces = 0;
+        ArrayList<HiloCaraCruz> hilos = new ArrayList<HiloCaraCruz>();
 
-        // Press Mayús+F10 or click the green arrow button in the gutter to run the code.
-        for (int i = 1; i <= 5; i++) {
+        System.out.print("Introduce la cantidad de hilos: ");
+        n = scanner.nextInt();
+        scanner.close();
 
-            // Press Mayús+F9 to start debugging your code. We have set one breakpoint
-            // for you, but you can always add more by pressing Ctrl+F8.
-            System.out.println("i = " + i);
+        // Crear y lanzar los hilos
+        for (int i = 0; i < n; i++) {
+            HiloCaraCruz h = new HiloCaraCruz();
+
+            hilos.add(h);
+            h.start();
         }
+
+        // Esperamos a todos
+        for (HiloCaraCruz h : hilos) {
+            try {
+                h.join();
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+
+        // Recuento de caras y cruces
+        for (HiloCaraCruz h : hilos) {
+            if (h.isCara()) {
+                contadorCaras++;
+            } else {
+                contadorCruces++;
+            }
+        }
+
+        System.out.println("Han salido " + contadorCaras + " caras y " + contadorCruces + " cruces");
     }
-}
+    }
